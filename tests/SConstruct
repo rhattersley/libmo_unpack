@@ -1,0 +1,34 @@
+def check_pkg_config(context):
+    context.Message('Checking for pkg-config... ')
+    ret, _ = context.TryAction('pkg-config --version')
+    context.Result(ret)
+    return ret
+
+
+def check_pkg(context, name, min_version):
+    fmt = 'Checking for {!r} at least version {} ... '
+    context.Message(fmt.format(name, min_version))
+    action = 'pkg-config --atleast-version={} {}'.format(min_version, name)
+    ret, _ = context.TryAction(action)
+    context.Result(ret)
+    return ret
+
+
+env = Environment()
+conf = Configure(env, custom_tests={'CheckPKGConfig': check_pkg_config,
+                                    'CheckPKG': check_pkg})
+if not conf.CheckPKGConfig():
+    print 'pkg-config not found'
+    Exit(1)
+if not conf.CheckPKG('check', '0.9.10'):
+    print 'check not found'
+    Exit(1)
+conf.Finish()
+
+env.ParseConfig('pkg-config --cflags --libs check')
+env.MergeFlags('-lmo_unpack -L..')
+check = env.Program('check_rle.c')
+def run_check(target, source, env):
+    import os
+    return os.system(check[0].abspath)
+env.AddPostAction(check, run_check)

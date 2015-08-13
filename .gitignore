@@ -1,28 +1,10 @@
 # Editors
 *.swp
 
-# Autotools/build artifacts
-.deps
-.libs
-
-Makefile
-Makefile.in
-
-aclocal.m4
-ar-lib
-autom4te.cache
-compile
-config.*
-configure
-depcomp
-install-sh
-libtool
-ltmain.sh
-m4
-missing
-stamp-h1
-test-driver
-
-*.la
-*.lo
+# SCons
+.sconsign.dblite
+.sconf_temp
+*.os
+config.log
 *.o
+tests/check_rle
