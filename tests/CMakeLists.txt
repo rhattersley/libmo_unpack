@@ -3,6 +3,11 @@ find_package(Check REQUIRED)
 include_directories(${CHECK_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${CHECK_LIBRARIES} mo_unpack m rt pthread)
 include_directories(. ../src)
+
 add_executable(test_rle check_rle.c)
 target_link_libraries(test_rle ${LIBS})
 add_test(test_rle ${CMAKE_CURRENT_BINARY_DIR}/test_rle)
+
+add_executable(test_wgdos wgdos_perf.c)
+target_link_libraries(test_wgdos ${LIBS})
+add_test(test_wgdos ${CMAKE_CURRENT_BINARY_DIR}/test_wgdos)
